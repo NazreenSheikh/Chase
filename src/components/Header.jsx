@@ -1,4 +1,5 @@
 import React from 'react'
+import AuthModal from './Authentication/AuthModal'
 import { useCrypto } from '../context/CryptoContext'
 import {
   AppBar,
@@ -40,6 +41,7 @@ const Header = () => {
           <MenuItem value={'USD'}>USD</MenuItem>
           <MenuItem value={'INR'}>INR</MenuItem>
         </Select>
+        <AuthModal />
       </Toolbar>
     </AppBar>
   )
