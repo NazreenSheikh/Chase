@@ -4,12 +4,12 @@ import Carousel from './Carousel'
 
 const useStyles = makeStyles((theme) => ({
   bannerContent: {
-    height: 900,
+    height: 700,
     display: 'flex',
     flexDirection: 'column',
     padding: 0,
     justifyContent: 'space-around',
-    maxWidth: "100vw"
+    maxWidth: '100vw',
   },
   tagline: {
     display: 'flex',
@@ -18,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     textAlign: 'center',
     color: 'white',
-        backgroundImage: 'url(./banner.svg)',
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover"
+    backgroundImage: 'url(./banner.svg)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
   },
 }))
 

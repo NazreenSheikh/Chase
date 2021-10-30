@@ -9,24 +9,32 @@ import {
   makeStyles,
   MenuItem,
 } from '@material-ui/core'
+import UserSidebar from './UserSidebar'
+import { useHistory } from 'react-router-dom'
 
 const Header = () => {
-  const { currency, setCurrency } = useCrypto()
+  const { currency, setCurrency, user } = useCrypto()
+  const history = useHistory()
   const useStyles = makeStyles((theme) => ({
     title: {
-      color: theme.palette.primary.main,
+      color: '#011220',
       fontWeight: 'bold',
       flex: 1,
       fontFamily: 'Poppins',
       cursor: 'Pointer',
+      letterSpacing: 5,
     },
   }))
   const classes = useStyles()
   return (
     <AppBar position="static" color="transparent">
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          Chase
+        <Typography
+          variant="h6"
+          className={classes.title}
+          onClick={() => history.push('/')}
+        >
+          CHASE CRYPTO
         </Typography>
         <Select
           variant="outlined"
@@ -41,7 +49,7 @@ const Header = () => {
           <MenuItem value={'USD'}>USD</MenuItem>
           <MenuItem value={'INR'}>INR</MenuItem>
         </Select>
-        <AuthModal />
+        {user ? <UserSidebar /> : <AuthModal />}
       </Toolbar>
     </AppBar>
   )
