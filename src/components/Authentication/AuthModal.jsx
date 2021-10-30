@@ -5,10 +5,10 @@ import Fade from '@material-ui/core/Fade'
 import { Button, Tab, Tabs, AppBar, Box } from '@material-ui/core'
 import Signup from './Signup'
 import Login from './Login'
-// import { useCrypto } from '../../context/CryptoContext'
-// import { auth } from '../../config/firebase'
-// import GoogleButton from "react-google-button";
-// import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useCrypto } from '../../context/CryptoContext'
+import { auth } from '../../config/firebase'
+import GoogleButton from 'react-google-button'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import React, { useState } from 'react'
 
 const AuthModal = () => {
@@ -37,7 +37,7 @@ const AuthModal = () => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
 
-  // const { setAlert } = CryptoState();
+  const { setAlert } = useCrypto()
 
   const handleOpen = () => {
     setOpen(true)
@@ -52,6 +52,30 @@ const AuthModal = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  const googleProvider = new GoogleAuthProvider()
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then((res) => {
+        setAlert({
+          open: true,
+          message: `Sign Up Successful. Welcome ${res.user.email}`,
+          type: 'success',
+        })
+
+        handleClose()
+      })
+      .catch((error) => {
+        setAlert({
+          open: true,
+          message: error.message,
+          type: 'error',
+        })
+        return
+      })
+  }
+
   return (
     <div>
       <Button
@@ -101,10 +125,10 @@ const AuthModal = () => {
             {value === 1 && <Signup handleClose={handleClose} />}
             <Box className={classes.google}>
               <span>OR</span>
-              {/* <GoogleButton
+              <GoogleButton
                 style={{ width: '100%', outline: 'none' }}
                 onClick={signInWithGoogle}
-              /> */}
+              />
             </Box>
           </div>
         </Fade>
