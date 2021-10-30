@@ -1,10 +1,10 @@
-// Snack Component - https://material-ui.com/components/snackbars/
+import React from 'react'
 import { Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-import { CryptoState } from '../CryptoContext'
+import { useCrypto } from '../context/CryptoContext'
 
 const Alert = () => {
-  const { alert, setAlert } = CryptoState()
+  const { alert, setAlert } = useCrypto()
 
   const handleCloseAlert = (event, reason) => {
     if (reason === 'clickaway') {
