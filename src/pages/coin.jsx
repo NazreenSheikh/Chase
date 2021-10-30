@@ -1,4 +1,9 @@
-import { LinearProgress, makeStyles, Typography } from '@material-ui/core'
+import {
+  LinearProgress,
+  makeStyles,
+  Typography,
+  Button,
+} from '@material-ui/core'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -7,12 +12,14 @@ import CoinInfo from '../components/CoinInfo'
 import { SingleCoin } from '../config/api'
 import { numberWithCommas } from '../components/CoinsTable'
 import { useCrypto } from '../context/CryptoContext'
+import { doc, setDoc } from 'firebase/firestore'
+import { db } from '../config/firebase'
 
 const Coin = () => {
   const { id } = useParams()
   const [coin, setCoin] = useState()
 
-  const { currency, symbol } = useCrypto()
+  const { currency, symbol, user, setAlert, watchlist } = useCrypto()
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id))
@@ -22,6 +29,54 @@ const Coin = () => {
   useEffect(() => {
     fetchCoin()
   }, [])
+
+  const inWatchlist = watchlist.includes(coin?.id)
+
+  const addToWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid)
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist ? [...watchlist, coin?.id] : [coin?.id] },
+        { merge: true },
+      )
+
+      setAlert({
+        open: true,
+        message: `${coin.name} Added to the Watchlist !`,
+        type: 'success',
+      })
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: 'error',
+      })
+    }
+  }
+
+  const removeFromWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid)
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist.filter((wish) => wish !== coin?.id) },
+        { merge: true },
+      )
+
+      setAlert({
+        open: true,
+        message: `${coin.name} Removed from the Watchlist !`,
+        type: 'success',
+      })
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: 'error',
+      })
+    }
+  }
 
   const useStyles = makeStyles((theme) => ({
     container: {
@@ -45,11 +100,11 @@ const Coin = () => {
     heading: {
       fontWeight: 'bold',
       marginBottom: 20,
-      fontFamily: 'Montserrat',
+      fontFamily: 'Poppins',
     },
     description: {
       width: '100%',
-      fontFamily: 'Montserrat',
+      fontFamily: 'Poppins',
       padding: 25,
       paddingBottom: 15,
       paddingTop: 0,
@@ -100,7 +155,7 @@ const Coin = () => {
             <Typography
               variant="h5"
               style={{
-                fontFamily: 'Montserrat',
+                fontFamily: 'Poppins',
               }}
             >
               {numberWithCommas(coin?.market_cap_rank)}
@@ -115,7 +170,7 @@ const Coin = () => {
             <Typography
               variant="h5"
               style={{
-                fontFamily: 'Montserrat',
+                fontFamily: 'Poppins',
               }}
             >
               {symbol}{' '}
@@ -132,7 +187,7 @@ const Coin = () => {
             <Typography
               variant="h5"
               style={{
-                fontFamily: 'Montserrat',
+                fontFamily: 'Poppins',
               }}
             >
               {symbol}{' '}
@@ -144,6 +199,19 @@ const Coin = () => {
               M
             </Typography>
           </span>
+          {user && (
+            <Button
+              variant="outlined"
+              style={{
+                width: '100%',
+                height: 40,
+                backgroundColor: inWatchlist ? '#ff0000' : '#EEBC1D',
+              }}
+              onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
+            >
+              {inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
+            </Button>
+          )}
         </div>
       </div>
       <CoinInfo coin={coin} />
