@@ -21,7 +21,7 @@ function App() {
       <Router>
         <Header />
         <Route path="/" exact component={Home} />
-        <Route path="/coin/:id" component={Coin} />
+        <Route path="/coins/:id" component={Coin} />
       </Router>
     </div>
   )

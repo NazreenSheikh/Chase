@@ -1,30 +1,26 @@
 import { Container, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
-// import Carousel from "./Carousel";
+import Carousel from './Carousel'
 
 const useStyles = makeStyles((theme) => ({
-  banner: {
-    // backgroundImage: 'url(./banner2.jpg)',
-  },
   bannerContent: {
-    height: 400,
+    height: 900,
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: 25,
+    padding: 0,
     justifyContent: 'space-around',
+    maxWidth: "100vw"
   },
   tagline: {
     display: 'flex',
-    height: '40%',
+    height: '85%',
     flexDirection: 'column',
     justifyContent: 'center',
     textAlign: 'center',
-    color: '#252224',
-  },
-  carousel: {
-    height: '50%',
-    display: 'flex',
-    alignItems: 'center',
+    color: 'white',
+        backgroundImage: 'url(./banner.svg)',
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover"
   },
 }))
 
@@ -48,7 +44,7 @@ function Banner() {
           <Typography
             variant="subtitle2"
             style={{
-              color: '#39322f',
+              color: 'white',
               textTransform: 'capitalize',
               fontFamily: 'Poppins',
             }}
@@ -56,7 +52,7 @@ function Banner() {
             Get all the Info regarding your favorite Crypto Currency
           </Typography>
         </div>
-        {/* <Carousel /> */}
+        <Carousel />
       </Container>
     </div>
   )
