@@ -157,7 +157,11 @@ export default function UserSidebar() {
                   {user.displayName || user.email}
                 </span>
                 <div className={classes.watchlist}>
-                  <span style={{ fontSize: 15, textShadow: '0 0 5px black' }}>
+                  <span
+                    style={{
+                      fontSize: 15,
+                    }}
+                  >
                     Watchlist
                   </span>
                   {coins.map((coin) => {
@@ -165,18 +169,25 @@ export default function UserSidebar() {
                       return (
                         <div className={classes.coin} key={coin.id}>
                           <span>{coin.name}</span>
-                          <span style={{ display: 'flex', gap: 8 }}>
+                          <span
+                            style={{
+                              display: 'flex',
+                              gap: 8,
+                            }}
+                          >
                             {symbol}{' '}
                             {numberWithCommas(coin.current_price.toFixed(2))}
                             <AiFillDelete
-                              style={{ cursor: 'pointer' }}
+                              style={{
+                                cursor: 'pointer',
+                              }}
                               fontSize="16"
                               onClick={() => removeFromWatchlist(coin)}
                             />
                           </span>
                         </div>
                       )
-                    else return <></>
+                    else return null
                   })}
                 </div>
               </div>
